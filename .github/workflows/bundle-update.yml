@@ -17,22 +17,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: fix/dependency-security-updates
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Ruby
+      - name: Set up Ruby 2.7 with latest bundler
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '2.7'
+          bundler: latest
           bundler-cache: false
+
+      - name: Patch Gemfile.lock bundler version
+        run: |
+          # Remove BUNDLED WITH constraint so bundler uses the installed version
+          sed -i '/^BUNDLED WITH/{N;d}' Gemfile.lock
+          echo "Gemfile.lock bundler constraint removed"
 
       - name: Update gems
         run: |
           GEMS="${{ github.event.inputs.gems }}"
           if [ -n "$GEMS" ]; then
-            bundle update $GEMS
+            bundle update $GEMS --bundler
           else
-            bundle update
+            bundle update --bundler
           fi
 
       - name: Commit updated Gemfile.lock
