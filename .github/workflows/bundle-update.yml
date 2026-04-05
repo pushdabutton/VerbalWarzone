@@ -17,18 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: fix/dependency-security-updates
+          ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.2'
           bundler-cache: false
 
-      - name: Update bundler and gems
+      - name: Update gems
         run: |
-          gem install bundler
           GEMS="${{ github.event.inputs.gems }}"
           if [ -n "$GEMS" ]; then
             bundle update $GEMS
