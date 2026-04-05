@@ -6,7 +6,7 @@ on:
       gems:
         description: 'Gems to update (space-separated, leave blank for all)'
         required: false
-        default: 'globalid rails-html-sanitizer loofah addressable tzinfo puma nokogiri better_errors rack websocket-extensions'
+        default: 'mimemagic globalid rails-html-sanitizer loofah addressable tzinfo puma nokogiri better_errors rack websocket-extensions'
 
 jobs:
   bundle-update:
