@@ -27,13 +27,10 @@ jobs:
           bundler: latest
           bundler-cache: false
 
-      - name: Patch Ruby version constraints for CI
+      - name: Patch Gemfile.lock bundler version
         run: |
-          # Comment out ruby version pin in Gemfile (2.5.3 not available, we use 2.7)
-          sed -i "s/^ruby '2\.5\.3'/# ruby '2.5.3' # patched for CI/" Gemfile
           # Remove BUNDLED WITH constraint so bundler uses the installed version
           sed -i '/^BUNDLED WITH/{N;d}' Gemfile.lock
-          echo "Gemfile ruby version constraint patched"
           echo "Gemfile.lock bundler constraint removed"
 
       - name: Update gems
